@@ -119,5 +119,11 @@ runcmd:
   - echo '${username}:${user_temporary_password}' | chpasswd
 
   - printf '\n\n=======\n'
+  - echo 'EXPIRE PASSWDS'
+  - printf '=======\n\n'
+  - passwd --expire root
+  - passwd --expire ${username}
+
+  - printf '\n\n=======\n'
   - echo 'END RUNCMD'
   - printf '=======\n\n'
