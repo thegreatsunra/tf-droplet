@@ -113,5 +113,11 @@ runcmd:
   - ln -s /snap/bin/certbot /usr/bin/certbot
 
   - printf '\n\n=======\n'
+  - echo 'CHANGE PASSWDS'
+  - printf '=======\n\n'
+  - echo 'root:${root_temporary_password}' | chpasswd
+  - echo '${username}:${user_temporary_password}' | chpasswd
+
+  - printf '\n\n=======\n'
   - echo 'END RUNCMD'
   - printf '=======\n\n'
