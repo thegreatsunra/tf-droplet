@@ -38,3 +38,23 @@ runcmd:
   - /etc/init.d/cron stop
   - /etc/init.d/cron start
 
+  - printf '\n\n=======\n'
+  - echo 'CONFIGURING SSH'
+  - printf '=======\n\n'
+  ## Temporarily stop fail2ban as we secure SSH:
+  - service fail2ban stop
+  ## Back up our SSH configuration file:
+  - cp /etc/ssh/sshd_config /etc/ssh/_sshd_config.original
+  ## Change the default SSH port:
+  #  - sed -i -e '/^Port/s/^.*$/Port 4444/' /etc/ssh/sshd_config
+  ## `PasswordAuthentication no` is set by default
+  ## Prevent root login via SSH:
+  - sed -i -e '/^PermitRootLogin/s/^.*$/PermitRootLogin no/' /etc/ssh/sshd_config
+  ## Add a comment that we're adding new config things below
+  - sed -i -e '$a# Added by cloud-config init process' /etc/ssh/sshd_config
+  ## Restrict SSH access to only our one allowed user:
+  - sed -i -e '$aAllowUsers ${username}' /etc/ssh/sshd_config
+  ## Now that we're done securing SSH, restart it: (this might disrupt SSH access, but so far that doesn't seem to be happening)
+  - /etc/init.d/ssh restart
+  ## Start fail2ban now that we're done securing SSH
+  - service fail2ban start
