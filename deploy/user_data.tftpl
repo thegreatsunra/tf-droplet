@@ -1,5 +1,16 @@
 #cloud-config
 
+## upgrade existing apt packages
+package_upgrade: true
+## install apt packages
+packages:
+  - fail2ban
+  - git
+  ## snapd is required for installing certbot
+  - snapd
+  - ufw
+  - zsh
+
 users:
   - name: ${username}
     gecos: ${user_full_name}
