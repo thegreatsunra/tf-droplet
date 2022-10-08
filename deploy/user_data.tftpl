@@ -100,3 +100,18 @@ runcmd:
   ## Show the rules that are active:
   - ufw status verbose
 
+  - printf '\n\n=======\n'
+  - echo 'INITIALIZE SNAP'
+  - printf '=======\n\n'
+  - snap install core
+  - snap refresh core
+
+  - printf '\n\n=======\n'
+  - echo 'INSTALL CERTBOT'
+  - printf '=======\n\n'
+  - snap install --classic certbot
+  - ln -s /snap/bin/certbot /usr/bin/certbot
+
+  - printf '\n\n=======\n'
+  - echo 'END RUNCMD'
+  - printf '=======\n\n'
