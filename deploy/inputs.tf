@@ -26,3 +26,7 @@ variable "droplet_tags" {
   default = ["droplet"]
 }
 
+variable "project" {
+  type = string
+}
+
