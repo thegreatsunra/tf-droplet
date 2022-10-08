@@ -127,3 +127,11 @@ runcmd:
   - printf '\n\n=======\n'
   - echo 'END RUNCMD'
   - printf '=======\n\n'
+
+## Restart the server:
+power_state:
+  mode: reboot
+  delay: "now"
+  message: "Goodbye!"
+  timeout: 30
+  condition: True
