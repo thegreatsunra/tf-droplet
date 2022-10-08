@@ -43,11 +43,11 @@ variable "user_full_name" {
 }
 
 variable "user_temporary_password" {
-  type = string
+  type    = string
   default = "temporary_password_change_me_immediately"
 }
 
 variable "root_temporary_password" {
-  type = string
+  type    = string
   default = "temporary_password_change_me_immediately"
 }
