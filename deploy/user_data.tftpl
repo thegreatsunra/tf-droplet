@@ -50,6 +50,22 @@ runcmd:
   ## `PasswordAuthentication no` is set by default
   ## Prevent root login via SSH:
   - sed -i -e '/^PermitRootLogin/s/^.*$/PermitRootLogin no/' /etc/ssh/sshd_config
+  ## Set logging level to verbose: (I think some log analysis tools count on this)
+  - sed -i -e '/^#LogLevel/s/^.*$/LogLevel VERBOSE/' /etc/ssh/sshd_config
+  ## Disable X11Forwarding:
+  - sed -i -e '/^X11Forwarding/s/^.*$/X11Forwarding no/' /etc/ssh/sshd_config
+  ## Disable AllowTcpForwarding:
+  - sed -i -e '/^#AllowTcpForwarding/s/^.*$/AllowTcpForwarding no/' /etc/ssh/sshd_config
+  ## Disable AllowAgentForwarding:
+  - sed -i -e '/^#AllowAgentForwarding/s/^.*$/AllowAgentForwarding no/' /etc/ssh/sshd_config
+  ## Set the maximum sessions to 2:
+  - sed -i -e '/^#MaxSessions/s/^.*$/MaxSessions 2/' /etc/ssh/sshd_config
+  ## Set the maximum auth tries to 2:
+  - sed -i -e '/^#MaxAuthTries/s/^.*$/MaxAuthTries 2/' /etc/ssh/sshd_config
+  ## Set client alive count max to 2:
+  - sed -i -e '/^#ClientAliveCountMax/s/^.*$/ClientAliveCountMax 2/' /etc/ssh/sshd_config
+  ## Disable compression:
+  - sed -i -e '/^#Compression/s/^.*$/Compression no/' /etc/ssh/sshd_config
   ## Add a comment that we're adding new config things below
   - sed -i -e '$a# Added by cloud-config init process' /etc/ssh/sshd_config
   ## Restrict SSH access to only our one allowed user:
