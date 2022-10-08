@@ -30,3 +30,14 @@ variable "project" {
   type = string
 }
 
+variable "public_ssh_key" {
+  type = string
+}
+
+variable "username" {
+  type = string
+}
+
+variable "user_full_name" {
+  type = string
+}
