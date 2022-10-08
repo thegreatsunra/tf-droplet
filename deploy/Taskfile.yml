@@ -1,0 +1,27 @@
+version: "3"
+
+dotenv: ['.env']
+
+tasks:
+  tf-apply:
+    cmds:
+      - terraform apply
+  tf-destroy:
+    cmds:
+      - terraform destroy
+  tf-fmt:
+    cmds:
+      - terraform fmt .
+  tf-init:
+    cmds:
+      - terraform init
+  tf-plan:
+    cmds:
+      - terraform plan
+  tf-providers-lock:
+    cmds:
+      - |
+        terraform providers lock \
+        -platform=darwin_amd64 \
+        -platform=darwin_arm64 \
+        -platform=linux_amd64
