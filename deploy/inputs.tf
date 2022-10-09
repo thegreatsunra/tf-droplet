@@ -42,6 +42,14 @@ variable "user_full_name" {
   type = string
 }
 
+variable "email_address" {
+  type = string
+}
+
+variable "domain_name" {
+  type = string
+}
+
 variable "user_temporary_password" {
   type    = string
   default = "temporary_password_change_me_immediately"
