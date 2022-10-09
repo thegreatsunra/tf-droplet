@@ -1,8 +1,6 @@
-# WIP: Digital Ocean Droplet via Terraform
+# Digital Ocean Droplet + WordPress/MariaDB/Nginx in Docker + Certbot TLS + Cloudflare DNS 
 
-## TODO
-
-- Build a Wordpress image `FROM` the official image [that includes the PHP plugins you need](https://github.com/docker-library/wordpress/blob/5bbbfa8909232af10ea3fea8b80302a6041a2d04/latest/php7.4/apache/Dockerfile#L18-L62)
+> Together at last
 
 ## Usage
 
@@ -60,3 +58,9 @@ sudo docker compose up -d --force-recreate
 ```shell
 task tf-destroy
 ```
+
+## License
+
+The MIT License (MIT)
+
+Copyright (c) 2022 Dane Petersen
