@@ -18,8 +18,6 @@ packages:
   - gnupg
   ## lsb-release required for installing docker
   - lsb-release
-  ## snapd required for installing certbot
-  - snapd
   - ufw
   - zsh
 
@@ -109,20 +107,6 @@ runcmd:
   - ufw enable
   ## Show the rules that are active:
   - ufw status verbose
-
-  - printf '\n\n=======\n'
-  - echo 'INITIALIZE SNAP'
-  - printf '=======\n\n'
-  ## Make sure snap is in $PATH
-  - export PATH=$PATH:/snap/bin
-  - snap install core
-  - snap refresh core
-
-  - printf '\n\n=======\n'
-  - echo 'INSTALL CERTBOT'
-  - printf '=======\n\n'
-  - snap install --classic certbot
-  - ln -s /snap/bin/certbot /usr/bin/certbot
 
   - printf '\n\n=======\n'
   - echo 'INSTALL DOCKER'
