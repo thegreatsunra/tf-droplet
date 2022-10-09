@@ -1,4 +1,20 @@
+variable "cloudflare_token" {
+  type = string
+}
+
+variable "cloudflare_zone" {
+  type = string
+}
+
+variable "cloudflare_record_name" {
+  type = string
+}
+
 variable "digital_ocean_token" {
+  type = string
+}
+
+variable "domain_name" {
   type = string
 }
 
@@ -26,12 +42,21 @@ variable "droplet_tags" {
   default = ["droplet"]
 }
 
+variable "email_address" {
+  type = string
+}
+
 variable "project" {
   type = string
 }
 
 variable "public_ssh_key" {
   type = string
+}
+
+variable "root_temporary_password" {
+  type    = string
+  default = "temporary_password_change_me_immediately"
 }
 
 variable "username" {
@@ -42,20 +67,9 @@ variable "user_full_name" {
   type = string
 }
 
-variable "email_address" {
-  type = string
-}
-
-variable "domain_name" {
-  type = string
-}
-
 variable "user_temporary_password" {
   type    = string
   default = "temporary_password_change_me_immediately"
 }
 
-variable "root_temporary_password" {
-  type    = string
-  default = "temporary_password_change_me_immediately"
-}
+
