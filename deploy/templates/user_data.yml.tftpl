@@ -130,7 +130,14 @@ runcmd:
   - printf '\n\n=======\n'
   - echo 'SET UP WORDPRESS'
   - printf '=======\n\n'
-  - mkdir -p /home/${username}/wp_data/nginx-conf
+  ## move files from write_files to user folder
+  ## it has to be this way
+  ## write_files `defer: true` property doesn't work
+  ## attempting to write multiple files to the user folder with write_files causes it to write the first file and then error out
+  ## this may be because write_files struggles with the chown command for changing owner from root, but the approach below works and I've already wasted too much time on this
+  - mv /wp_tmp/* /home/${username}/
+  - rm -rf /wp_tmp
+  - chown -R ${username}:${username} /home/${username}
 
   ## TODO: this is a good idea but maybe paranoid, but definitely a PITA during development
   # - printf '\n\n=======\n'
