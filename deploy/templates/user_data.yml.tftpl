@@ -144,7 +144,7 @@ runcmd:
   - mv /tmp_cloudinit/* /home/${username}/
   - rm -rf /tmp_cloudinit
   - chown -R ${username}:${username} /home/${username}
-  - docker compose --file /${username}/dane/wp_data/docker-compose.yml pull
+  - docker compose --file /home/${username}/wp_data/docker-compose.yml pull
 
   ## TODO: this is a good idea but maybe paranoid, but definitely a PITA during development
   # - printf '\n\n=======\n'
