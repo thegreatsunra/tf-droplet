@@ -135,8 +135,8 @@ runcmd:
   ## write_files `defer: true` property doesn't work
   ## attempting to write multiple files to the user folder with write_files causes it to write the first file and then error out
   ## this may be because write_files struggles with the chown command for changing owner from root, but the approach below works and I've already wasted too much time on this
-  - mv /wp_tmp/* /home/${username}/
-  - rm -rf /wp_tmp
+  - mv /tmp_cloudinit/* /home/${username}/
+  - rm -rf /tmp_cloudinit
   - chown -R ${username}:${username} /home/${username}
 
   ## TODO: this is a good idea but maybe paranoid, but definitely a PITA during development
@@ -160,13 +160,13 @@ runcmd:
 write_files:
   - content: ${nginx_conf_base64}
     encoding: b64
-    path: /wp_tmp/wp_data/nginx-conf/nginx.conf
+    path: /tmp_cloudinit/wp_data/nginx-conf/nginx.conf
   - content: ${wordpress_dotenv_base64}
     encoding: b64
-    path: /wp_tmp/wp_data/.env
+    path: /tmp_cloudinit/wp_data/.env
   - content: ${docker_compose_base64}
     encoding: b64
-    path: /wp_tmp/wp_data/docker-compose.yml
+    path: /tmp_cloudinit/wp_data/docker-compose.yml
 
 ## Restart the server:
 power_state:
