@@ -3,27 +3,25 @@
 ## cloudinit logs are here:
 ## /var/log/cloud-init.log - The actual process logs
 ## /var/log/cloud-init-output.log - Any output produced
+
 ## upgrade existing apt packages
 package_upgrade: true
 ## install apt packages
 packages:
-  ## required for installing docker
+  ## ca-certificates required for installing docker
   - ca-certificates
-  ## required for installing docker
+  ## curl required for installing docker
   - curl
   - fail2ban
   - git
-  ## required for installing docker
+  ## gnupg required for installing docker
   - gnupg
-  ## required for installing docker
+  ## lsb-release required for installing docker
   - lsb-release
-  ## required for installing certbot
+  ## snapd required for installing certbot
   - snapd
   - ufw
   - zsh
-
-  ## required for installing docker
-  - lsb-release
 
 users:
   - name: ${username}
@@ -50,7 +48,7 @@ runcmd:
   - /etc/init.d/cron start
 
   - printf '\n\n=======\n'
-  - echo 'CONFIGURING SSH'
+  - echo 'CONFIGURE SSH'
   - printf '=======\n\n'
   ## Temporarily stop fail2ban as we secure SSH:
   - service fail2ban stop
@@ -81,7 +79,7 @@ runcmd:
   - sed -i -e '$a# Added by cloud-config init process' /etc/ssh/sshd_config
   ## Restrict SSH access to only our one allowed user:
   - sed -i -e '$aAllowUsers ${username}' /etc/ssh/sshd_config
-  ## Now that we're done securing SSH, restart it: (this might disrupt SSH access, but so far that doesn't seem to be happening)
+  ## Now that we're done securing SSH, restart it:
   - /etc/init.d/ssh restart
   ## Start fail2ban now that we're done securing SSH
   - service fail2ban start
@@ -97,9 +95,9 @@ runcmd:
   # Allow SSH on the default ports:
   - ufw allow ssh
   ## Deny requests on the default SSH ports:
-  #  - ufw deny ssh
+  # - ufw deny ssh
   ## Allow requests on updated SSH port:
-  #  - ufw allow 4444/tcp
+  # - ufw allow 4444/tcp
   ## Allow requests on the http port:
   - ufw allow http
   ## Allow requests on the https port:
