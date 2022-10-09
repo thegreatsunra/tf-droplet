@@ -12,5 +12,8 @@ locals {
     user_full_name          = var.user_full_name
     user_temporary_password = var.user_temporary_password
     username                = var.username
+    wordpress_dotenv_base64 = base64encode(file("./templates/.env"))
+    nginx_conf_base64       = base64encode(templatefile("./templates/nginx.conf.tftpl", local.nginx_conf_vars))
+    docker_compose_base64   = base64encode(templatefile("./templates/docker-compose.yml.tftpl", local.docker_compose_vars))
   }
 }

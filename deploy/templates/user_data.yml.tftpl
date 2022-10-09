@@ -150,6 +150,17 @@ runcmd:
   - echo 'END RUNCMD'
   - printf '=======\n\n'
 
+write_files:
+  - content: ${nginx_conf_base64}
+    encoding: b64
+    path: /wp_tmp/wp_data/nginx-conf/nginx.conf
+  - content: ${wordpress_dotenv_base64}
+    encoding: b64
+    path: /wp_tmp/wp_data/.env
+  - content: ${docker_compose_base64}
+    encoding: b64
+    path: /wp_tmp/wp_data/docker-compose.yml
+
 ## Restart the server:
 power_state:
   mode: reboot
