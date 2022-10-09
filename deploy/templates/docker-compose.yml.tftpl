@@ -11,14 +11,14 @@ services:
     env_file: .env
     environment:
       - MYSQL_DATABASE=wordpress
-    volumes: 
+    volumes:
       - db_data:/var/lib/mysql
     command: "--default-authentication-plugin=mysql_native_password"
     networks:
       - app-network
 
   wordpress:
-    depends_on: 
+    depends_on:
       - db
     image: wordpress:6.0.2-php8.1-fpm-alpine
     container_name: wordpress
@@ -58,7 +58,15 @@ services:
       - certbot-etc:/etc/letsencrypt
       - wp_data:/var/www/html
     ## replace `--staging` with `--force-renewal` once you know it works
-    command: certonly --webroot --webroot-path=/var/www/html --email ${email_address} --agree-tos --no-eff-email --staging -d ${domain_name} -d www.${domain_name}
+    command: |
+      certonly \
+        --webroot \
+        --webroot-path=/var/www/html \
+        --email ${email_address} \
+        --agree-tos \
+        --no-eff-email \
+        --staging \
+        -d ${domain_name}
 
 volumes:
   certbot-etc:
