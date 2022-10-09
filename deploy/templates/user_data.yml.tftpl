@@ -170,7 +170,7 @@ write_files:
     path: /tmp_cloudinit/wp_data/nginx-conf/nginx.conf
   - content: ${nginx_https_conf_base64}
     encoding: b64
-    path: /tmp_cloudinit/wp_data/nginx-conf/nginx.https.conf
+    path: /tmp_cloudinit/wp_data/nginx-conf/nginx.conf.https
   - content: ${wordpress_dotenv_base64}
     encoding: b64
     path: /tmp_cloudinit/wp_data/.env
