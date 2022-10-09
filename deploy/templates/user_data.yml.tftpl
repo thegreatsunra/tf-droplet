@@ -128,6 +128,12 @@ runcmd:
     docker-compose-plugin
 
   - printf '\n\n=======\n'
+  - echo 'SET UP NGINX'
+  - printf '=======\n\n'
+
+  - curl -sSLo /tmp_cloudinit/nginx-conf/options-ssl-nginx.conf https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
+
+  - printf '\n\n=======\n'
   - echo 'SET UP WORDPRESS'
   - printf '=======\n\n'
   ## move files from write_files to user folder
