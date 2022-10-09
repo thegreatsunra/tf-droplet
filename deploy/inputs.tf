@@ -2,11 +2,11 @@ variable "cloudflare_token" {
   type = string
 }
 
-variable "cloudflare_zone" {
+variable "cloudflare_record_name" {
   type = string
 }
 
-variable "cloudflare_record_name" {
+variable "cloudflare_zone" {
   type = string
 }
 
@@ -59,10 +59,6 @@ variable "root_temporary_password" {
   default = "temporary_password_change_me_immediately"
 }
 
-variable "username" {
-  type = string
-}
-
 variable "user_full_name" {
   type = string
 }
@@ -72,4 +68,7 @@ variable "user_temporary_password" {
   default = "temporary_password_change_me_immediately"
 }
 
+variable "username" {
+  type = string
+}
 
