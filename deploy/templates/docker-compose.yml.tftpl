@@ -59,14 +59,14 @@ services:
       - wp_data:/var/www/html
     ## replace `--staging` with `--force-renewal` once you know it works
     command: |
-      certonly \
-        --webroot \
-        --webroot-path=/var/www/html \
-        --email ${email_address} \
-        --agree-tos \
-        --no-eff-email \
-        --staging \
-        -d ${domain_name}
+      certonly
+      --webroot
+      --webroot-path=/var/www/html
+      --email ${email_address}
+      --agree-tos
+      --no-eff-email
+      --force-renewal
+      -d ${domain_name}
 
 volumes:
   certbot-etc:
