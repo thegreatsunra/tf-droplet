@@ -25,6 +25,10 @@ variable "droplet_image" {
 
 variable "droplet_name" {
   type = string
+  validation {
+    condition     = length(regexall("[ _A-Z]+", var.droplet_name)) == 0
+    error_message = "Droplet name must be lowercase and cannot contain spaces or underscores"
+  }
 }
 
 variable "droplet_region" {
