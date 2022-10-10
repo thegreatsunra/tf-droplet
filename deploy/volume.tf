@@ -6,7 +6,7 @@ resource "digitalocean_volume" "volume" {
   tags                    = var.resource_tags
 }
 
-resource "digitalocean_volume_attachment" "foobar" {
+resource "digitalocean_volume_attachment" "volume_attachment" {
   droplet_id = digitalocean_droplet.droplet.id
   volume_id  = digitalocean_volume.volume.id
 }

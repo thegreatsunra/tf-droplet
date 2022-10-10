@@ -2,10 +2,12 @@ locals {
   nginx_conf_vars = {
     domain_name = var.domain_name
   }
+
   docker_compose_vars = {
     domain_name   = var.domain_name
     email_address = var.email_address
   }
+
   user_data_vars = {
     docker_compose_base64   = base64encode(templatefile("./templates/docker-compose.yml.tftpl", local.docker_compose_vars))
     nginx_http_conf_base64  = base64encode(templatefile("./templates/nginx.conf.http.tftpl", local.nginx_conf_vars))
