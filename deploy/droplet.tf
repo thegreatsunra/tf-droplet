@@ -4,6 +4,6 @@ resource "digitalocean_droplet" "droplet" {
   name       = var.droplet_name
   region     = var.droplet_region
   size       = var.droplet_size
-  tags       = var.droplet_tags
+  tags       = var.resource_tags
   user_data  = templatefile("./templates/user_data.yml.tftpl", local.user_data_vars)
 }

@@ -37,11 +37,6 @@ variable "droplet_size" {
   default = "s-1vcpu-1gb"
 }
 
-variable "droplet_tags" {
-  type    = list(any)
-  default = ["droplet"]
-}
-
 variable "email_address" {
   type = string
 }
@@ -52,6 +47,11 @@ variable "project" {
 
 variable "public_ssh_key" {
   type = string
+}
+
+variable "resource_tags" {
+  type    = list(any)
+  default = ["droplet"]
 }
 
 variable "root_temporary_password" {
