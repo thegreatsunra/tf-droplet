@@ -16,6 +16,10 @@ variable "digital_ocean_token" {
 
 variable "domain_name" {
   type = string
+  validation {
+    condition     = length(regexall("[^-.a-z0-9]+", var.domain_name)) == 0
+    error_message = "Must be a valid domain name"
+  }
 }
 
 variable "droplet_image" {
@@ -26,8 +30,8 @@ variable "droplet_image" {
 variable "droplet_name" {
   type = string
   validation {
-    condition     = length(regexall("[ _A-Z]+", var.droplet_name)) == 0
-    error_message = "Droplet name must be lowercase and cannot contain spaces or underscores"
+    condition     = length(regexall("[^-a-z0-9]+", var.droplet_name)) == 0
+    error_message = "Droplet name can only contain the following characters: a-z, 0-9, -"
   }
 }
 
@@ -75,4 +79,3 @@ variable "user_temporary_password" {
 variable "username" {
   type = string
 }
-
