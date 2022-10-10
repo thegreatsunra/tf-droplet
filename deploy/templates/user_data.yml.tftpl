@@ -131,7 +131,7 @@ runcmd:
   - echo 'SET UP NGINX'
   - printf '=======\n\n'
   # get the recommended nginx security parameter for certbot using curl:
-  - curl -sSLo /tmp_cloudinit/wp_data/nginx-conf/options-ssl-nginx.conf https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
+  - curl -sSLo ${tmp_docker_volume_path}/nginx-conf/options-ssl-nginx.conf https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
 
   - printf '\n\n=======\n'
   - echo 'SET UP WORDPRESS'
@@ -141,10 +141,10 @@ runcmd:
   ## write_files `defer: true` property doesn't work
   ## attempting to write multiple files to the user folder with write_files causes it to write the first file and then error out
   ## this may be because write_files struggles with the chown command for changing owner from root, but the approach below works and I've already wasted too much time on this
-  - mv /tmp_cloudinit/* /home/${username}/
-  - rm -rf /tmp_cloudinit
-  - chown -R ${username}:${username} /home/${username}
-  - docker compose --file /home/${username}/wp_data/docker-compose.yml pull
+  - mv /${tmp_folder_name}/* ${volume_mount_path}/
+  - rm -rf /${tmp_folder_name}
+  - chown -R ${username}:${username} ${volume_mount_path}
+  - docker compose --file ${docker_volume_path}/docker-compose.yml pull
 
   ## TODO: this is a good idea but maybe paranoid, but definitely a PITA during development
   # - printf '\n\n=======\n'
@@ -167,16 +167,16 @@ runcmd:
 write_files:
   - content: ${nginx_http_conf_base64}
     encoding: b64
-    path: /tmp_cloudinit/wp_data/nginx-conf/nginx.conf
+    path: ${tmp_docker_volume_path}/nginx-conf/nginx.conf
   - content: ${nginx_https_conf_base64}
     encoding: b64
-    path: /tmp_cloudinit/wp_data/nginx-conf/nginx.conf.https
+    path: ${tmp_docker_volume_path}/nginx-conf/nginx.conf.https
   - content: ${wordpress_dotenv_base64}
     encoding: b64
-    path: /tmp_cloudinit/wp_data/.env
+    path: ${tmp_docker_volume_path}/.env
   - content: ${docker_compose_base64}
     encoding: b64
-    path: /tmp_cloudinit/wp_data/docker-compose.yml
+    path: ${tmp_docker_volume_path}/docker-compose.yml
 
 ## Restart the server:
 power_state:

@@ -12,7 +12,7 @@ services:
     environment:
       - MYSQL_DATABASE=wordpress
     volumes:
-      - db:/var/lib/mysql
+      - ${docker_volume_path}/db:/var/lib/mysql
     command: "--default-authentication-plugin=mysql_native_password"
     networks:
       - app-network
@@ -30,7 +30,7 @@ services:
       - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
       - WORDPRESS_DB_NAME=wordpress
     volumes:
-      - wordpress:/var/www/html
+      - ${docker_volume_path}/wordpress:/var/www/html
     networks:
       - app-network
 
@@ -44,9 +44,9 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - certbot-etc:/etc/letsencrypt
-      - ./nginx-conf:/etc/nginx/conf.d
-      - wordpress:/var/www/html
+      - ${docker_volume_path}/certbot-etc:/etc/letsencrypt
+      - ${docker_volume_path}/nginx-conf:/etc/nginx/conf.d
+      - ${docker_volume_path}/wordpress:/var/www/html
     networks:
       - app-network
 
@@ -56,8 +56,8 @@ services:
     image: certbot/certbot:v1.31.0
     container_name: certbot
     volumes:
-      - certbot-etc:/etc/letsencrypt
-      - wordpress:/var/www/html
+      - ${docker_volume_path}/certbot-etc:/etc/letsencrypt
+      - ${docker_volume_path}/wordpress:/var/www/html
     ## replace `--staging` with `--force-renewal` once you know it works
     command: |
       certonly

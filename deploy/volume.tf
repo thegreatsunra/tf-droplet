@@ -1,6 +1,6 @@
 resource "digitalocean_volume" "volume" {
   region                  = var.droplet_region
-  name                    = "volume-${var.droplet_name}"
+  name                    = local.volume_name
   size                    = 4
   initial_filesystem_type = "ext4"
   tags                    = var.resource_tags
