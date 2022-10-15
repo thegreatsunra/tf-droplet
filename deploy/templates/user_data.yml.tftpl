@@ -165,15 +165,30 @@ runcmd:
   - printf '=======\n\n'
 
 write_files:
-  - content: ${nginx_http_conf_base64}
+  - content: ${nginx_conf_base64}
     encoding: b64
-    path: ${tmp_docker_volume_path}/nginx-conf/nginx.conf
-  - content: ${nginx_https_conf_base64}
+    path: ${tmp_docker_volume_path}/nginx-conf/default.conf
+
+  - content: ${nginx_config_wordpress_conf_base64}
     encoding: b64
-    path: ${tmp_docker_volume_path}/nginx-conf/nginx.conf.https
+    path: ${tmp_docker_volume_path}/nginx-conf/modules/wordpress.conf
+
+  - content: ${nginx_config_general_conf_base64}
+    encoding: b64
+    path: ${tmp_docker_volume_path}/nginx-conf/modules/general.conf
+
+  - content: ${nginx_config_security_conf_base64}
+    encoding: b64
+    path: ${tmp_docker_volume_path}/nginx-conf/modules/security.conf
+
+  - content: ${nginx_config_php_fastcgi_conf_base64}
+    encoding: b64
+    path: ${tmp_docker_volume_path}/nginx-conf/modules/php_fastcgi.conf
+
   - content: ${wordpress_dotenv_base64}
     encoding: b64
     path: ${tmp_docker_volume_path}/.env
+
   - content: ${docker_compose_base64}
     encoding: b64
     path: ${tmp_docker_volume_path}/docker-compose.yml

@@ -1,0 +1,42 @@
+server {
+	listen      80;
+	listen      [::]:80;
+	server_name ${domain_name};
+	set         $base /var/www/html;
+	root        $base;
+	## TODO: improve file paths when we know what we want
+	# set         $base /var/www/${domain_name};
+	# root        $base/public;
+
+	# security
+	include     /etc/nginx/conf.d/modules/security.conf;
+ 
+	# wordpress
+	include     /etc/nginx/conf.d/modules/wordpress.conf;
+
+	# logging
+	## TODO: improve file paths when we know what we want
+	# access_log  /var/log/nginx/${domain_name}.access.log;
+	# error_log   /var/log/nginx/${domain_name}.error.log warn;
+
+	# index.php
+	index       index.php;
+
+	# index.php fallback
+	location / {
+		try_files $uri $uri/ /index.php?$query_string;
+	}
+
+	location ~ \.php$ {
+		try_files $uri =404;
+		fastcgi_split_path_info ^(.+\.php)(/.+)$;
+		fastcgi_pass wordpress:9000;
+		fastcgi_index index.php;
+		include fastcgi_params;
+		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		fastcgi_param PATH_INFO $fastcgi_path_info;
+	}
+	
+	# additional config
+	include /etc/nginx/conf.d/modules/general.conf;
+}
