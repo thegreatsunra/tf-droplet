@@ -23,7 +23,7 @@ locals {
     docker_volume_path      = local.docker_volume_path
     nginx_conf_base64 = base64encode(templatefile("./templates/nginx-conf/default.conf.tftpl", local.nginx_conf_vars))
     nginx_config_general_conf_base64 = base64encode(file("./templates/nginx-conf/modules/general.conf"))
-    nginx_config_security_conf_base64 = base64encode(file("./templates/nginx-conf/modules/wordpress.conf"))
+    nginx_config_security_conf_base64 = base64encode(file("./templates/nginx-conf/modules/security.conf"))
     nginx_config_wordpress_conf_base64 = base64encode(file("./templates/nginx-conf/modules/wordpress.conf"))
     nginx_config_php_fastcgi_conf_base64 = base64encode(file("./templates/nginx-conf/modules/php_fastcgi.conf"))
     public_ssh_key          = var.public_ssh_key
