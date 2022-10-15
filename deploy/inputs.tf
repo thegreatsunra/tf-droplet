@@ -2,24 +2,8 @@ variable "cloudflare_token" {
   type = string
 }
 
-variable "cloudflare_record_name" {
-  type = string
-}
-
-variable "cloudflare_zone" {
-  type = string
-}
-
 variable "digital_ocean_token" {
   type = string
-}
-
-variable "domain_name" {
-  type = string
-  validation {
-    condition     = length(regexall("[^-.a-z0-9]+", var.domain_name)) == 0
-    error_message = "Must be a valid domain name"
-  }
 }
 
 variable "droplet_image" {
@@ -58,7 +42,7 @@ variable "public_ssh_key" {
 }
 
 variable "resource_tags" {
-  type    = list(any)
+  type    = list(string)
   default = ["droplet"]
 }
 
