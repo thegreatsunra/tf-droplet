@@ -36,3 +36,4 @@ terraform.rc
 # DANE - custom
 .env
 .DS_Store
+sites-available.json

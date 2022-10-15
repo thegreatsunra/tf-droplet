@@ -8,12 +8,14 @@ locals {
 
   tmp_docker_volume_path = "/${var.tmp_folder_name}/${var.docker_volume_folder_name}"
 
+  sites_available_list = jsondecode(file("./sites-available.json"))
+
   nginx_conf_vars = {
-    domain_name = var.domain_name
+    domain_name = local.sites_available_list[0].domain_name
   }
 
   docker_compose_vars = {
-    domain_name        = var.domain_name
+    domain_name        = local.sites_available_list[0].domain_name
     email_address      = var.email_address
     docker_volume_path = local.docker_volume_path
   }
