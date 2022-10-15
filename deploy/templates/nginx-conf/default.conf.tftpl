@@ -11,9 +11,6 @@ server {
 	# security
 	include     /etc/nginx/conf.d/modules/security.conf;
  
-	# wordpress
-	include     /etc/nginx/conf.d/modules/wordpress.conf;
-
 	# logging
 	## TODO: improve file paths when we know what we want
 	# access_log  /var/log/nginx/${domain_name}.access.log;
@@ -39,4 +36,7 @@ server {
 	
 	# additional config
 	include /etc/nginx/conf.d/modules/general.conf;
+
+	# wordpress
+	include     /etc/nginx/conf.d/modules/wordpress.conf;
 }
