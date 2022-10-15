@@ -27,7 +27,6 @@ locals {
     nginx_config_general_conf_base64 = base64encode(file("./templates/nginx-conf/modules/general.conf"))
     nginx_config_security_conf_base64 = base64encode(file("./templates/nginx-conf/modules/security.conf"))
     nginx_config_wordpress_conf_base64 = base64encode(file("./templates/nginx-conf/modules/wordpress.conf"))
-    nginx_config_php_fastcgi_conf_base64 = base64encode(file("./templates/nginx-conf/modules/php_fastcgi.conf"))
     public_ssh_key          = var.public_ssh_key
     root_temporary_password = var.root_temporary_password
     tmp_docker_volume_path  = local.tmp_docker_volume_path
