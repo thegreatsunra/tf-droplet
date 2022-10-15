@@ -1,0 +1,7 @@
+[
+    {
+        "cloudflare_zone": "<example.com>",
+        "domain_name": "<subdomain.example.com>",
+        "cloudflare_record_name": "<subdomain>"
+    }
+]
