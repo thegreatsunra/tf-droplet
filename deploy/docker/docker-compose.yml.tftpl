@@ -10,33 +10,39 @@ services:
     restart: unless-stopped
     env_file: .env
     environment:
-      - MYSQL_DATABASE=wordpress
+%{ for wp_container_key, wp_container_value in wp_containers ~}
+      - MYSQL_DATABASE=${wp_container_key}
+%{ endfor ~}
     volumes:
       - mariadb:/var/lib/mysql
     command: "--default-authentication-plugin=mysql_native_password"
     networks:
       - app-network
 
-  wordpress:
+%{ for wp_container_key, wp_container_value in wp_containers ~}
+  ${wp_container_key}:
     depends_on:
       - mariadb
     image: wordpress:6.0.2-php8.1-fpm-alpine
-    container_name: wordpress
+    container_name: ${wp_container_key}
     restart: unless-stopped
     env_file: .env
     environment:
       - WORDPRESS_DB_HOST=mariadb:3306
       - WORDPRESS_DB_USER=$MYSQL_USER
       - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
-      - WORDPRESS_DB_NAME=wordpress
+      - WORDPRESS_DB_NAME=${wp_container_key}
     volumes:
-      - wordpress:/var/www/html
+      - ${wp_container_key}:/var/www/html
     networks:
       - app-network
+%{ endfor ~}
 
   nginx:
     depends_on:
-      - wordpress
+%{ for wp_container_key, wp_container_value in wp_containers ~}
+      - ${wp_container_key}
+%{ endfor ~}
     build: ./nginx
     container_name: nginx
     restart: unless-stopped
@@ -45,7 +51,9 @@ services:
       - "443:443"
     volumes:
       - certbot-etc:/etc/letsencrypt
-      - wordpress:/var/www/html/${domain_name}
+%{ for wp_container_key, wp_container_value in wp_containers ~}
+      - ${wp_container_key}:/var/www/html/${wp_container_value}
+%{ endfor ~}
     networks:
       - app-network
 
@@ -56,22 +64,28 @@ services:
     container_name: certbot
     volumes:
       - certbot-etc:/etc/letsencrypt
-      - wordpress:/var/www/html
+%{ for wp_container_key, wp_container_value in wp_containers ~}
+      - ${wp_container_key}:/var/www/html/${wp_container_value}
+%{ endfor ~}
     ## replace `--staging` with `--force-renewal` once you know it works
     command: |
+%{ for wp_container_key, wp_container_value in wp_containers ~}
       certonly
       --webroot
-      --webroot-path=/var/www/html
+      --webroot-path=/var/www/html/${wp_container_value}
       --email ${email_address}
       --agree-tos
       --no-eff-email
       --staging
-      -d ${domain_name}
+      -d ${wp_container_value}
+%{ endfor ~}
 
 volumes:
   certbot-etc:
   mariadb:
-  wordpress:
+%{ for wp_container_key, wp_container_value in wp_containers ~}
+  ${wp_container_key}:
+%{ endfor ~}
 
 networks:
   app-network:

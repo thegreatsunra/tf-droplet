@@ -1,9 +1,10 @@
+%{ for wp_container_key, wp_container_value in wp_containers ~}
 server {
 	listen      80;
 	listen      [::]:80;
-	server_name ${domain_name};
+	server_name ${wp_container_value};
 	set         $base /var/www/html;
-	root        $base/${domain_name};
+	root        $base/${wp_container_value};
 
 	# security
 	include     /etc/nginx/conf.d/modules/security.conf;
@@ -20,3 +21,4 @@ server {
 	# wordpress
 	include     /etc/nginx/conf.d/modules/wordpress.conf;
 }
+%{ endfor ~}
