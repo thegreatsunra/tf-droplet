@@ -45,7 +45,7 @@ services:
       - "443:443"
     volumes:
       - certbot-etc:/etc/letsencrypt
-      - wordpress:/var/www/html
+      - wordpress:/var/www/html/${domain_name}
     networks:
       - app-network
 

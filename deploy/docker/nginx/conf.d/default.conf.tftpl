@@ -3,9 +3,7 @@ server {
 	listen      [::]:80;
 	server_name ${domain_name};
 	set         $base /var/www/html;
-	root        $base;
-	## TODO: figure out why this doesn't resolve
-	# root      $base/${domain_name};
+	root        $base/${domain_name};
 
 	# security
 	include     /etc/nginx/conf.d/modules/security.conf;
@@ -22,14 +20,14 @@ server {
 	}
 
 	location ~ \.php$ {
-		## TODO: Can we define/override root here too? Does that make sense?
-		# root $base;
 		try_files $uri =404;
 		fastcgi_split_path_info ^(.+\.php)(/.+)$;
 		fastcgi_pass wordpress:9000;
 		fastcgi_index index.php;
 		include fastcgi_params;
-		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		# it took me days to figure out what fastcgi_param needed to be
+		# https://stackoverflow.com/questions/53992753/docker-nginx-multiple-domains-multiple-wordpress-on-their-own-directories-in
+		fastcgi_param SCRIPT_FILENAME /var/www/html$fastcgi_script_name;
 		fastcgi_param PATH_INFO $fastcgi_path_info;
 	}
 	
