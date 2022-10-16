@@ -11,25 +11,8 @@ server {
 	# logging
 	# NOTE: Don't define logging here. It intercepts Docker's built-in logging
 
-	# index.php
-	index       index.php;
-
-	# index.php fallback
-	location / {
-		try_files $uri $uri/ /index.php?$query_string;
-	}
-
-	location ~ \.php$ {
-		try_files $uri =404;
-		fastcgi_split_path_info ^(.+\.php)(/.+)$;
-		fastcgi_pass wordpress:9000;
-		fastcgi_index index.php;
-		include fastcgi_params;
-		# it took me days to figure out what fastcgi_param needed to be
-		# https://stackoverflow.com/questions/53992753/docker-nginx-multiple-domains-multiple-wordpress-on-their-own-directories-in
-		fastcgi_param SCRIPT_FILENAME /var/www/html$fastcgi_script_name;
-		fastcgi_param PATH_INFO $fastcgi_path_info;
-	}
+	# php and fastcgi
+	include /etc/nginx/conf.d/modules/php.conf;
 	
 	# additional config
 	include /etc/nginx/conf.d/modules/general.conf;

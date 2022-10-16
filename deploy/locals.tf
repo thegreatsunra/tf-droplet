@@ -19,6 +19,7 @@ locals {
     nginx_config_general_conf_base64   = base64encode(file("./docker/nginx/conf.d/modules/general.conf"))
     nginx_config_security_conf_base64  = base64encode(file("./docker/nginx/conf.d/modules/security.conf"))
     nginx_config_wordpress_conf_base64 = base64encode(file("./docker/nginx/conf.d/modules/wordpress.conf"))
+    nginx_config_php_conf_base64                  = base64encode(templatefile("./docker/nginx/conf.d/modules/php.conf.tftpl", local.nginx_conf_vars))
     nginx_dockerfile                   = base64encode(file("./docker/nginx/Dockerfile"))
     public_ssh_key                     = var.public_ssh_key
     root_temporary_password            = var.root_temporary_password
