@@ -8,8 +8,8 @@ locals {
   }
 
   docker_compose_vars = {
-    domain_name        = local.sites_available_list[0].domain_name
-    email_address      = var.email_address
+    domain_name   = local.sites_available_list[0].domain_name
+    email_address = var.email_address
   }
 
   user_data_vars = {
