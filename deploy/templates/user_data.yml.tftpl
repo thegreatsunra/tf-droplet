@@ -131,7 +131,7 @@ runcmd:
   - echo 'SET UP NGINX'
   - printf '=======\n\n'
   # get the recommended nginx security parameter for certbot using curl:
-  - curl -sSLo ${tmp_docker_volume_path}/nginx-conf/options-ssl-nginx.conf https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
+  - curl -sSLo ${tmp_folder}/docker/nginx/conf.d/options-ssl-nginx.conf https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf
 
   - printf '\n\n=======\n'
   - echo 'SET UP WORDPRESS'
@@ -141,10 +141,12 @@ runcmd:
   ## write_files `defer: true` property doesn't work
   ## attempting to write multiple files to the user folder with write_files causes it to write the first file and then error out
   ## this may be because write_files struggles with the chown command for changing owner from root, but the approach below works and I've already wasted too much time on this
-  - mv /${tmp_folder_name}/* ${volume_mount_path}/
-  - rm -rf /${tmp_folder_name}
-  - chown -R ${username}:${username} ${volume_mount_path}
-  - docker compose --file ${docker_volume_path}/docker-compose.yml pull
+  - mkdir /home/${username}/docker
+  - mv ${tmp_folder}/docker/* /home/${username}/docker/
+  - mv ${tmp_folder}/docker/.env /home/${username}/docker/
+  - rm -rf ${tmp_folder}
+  - chown -R ${username}:${username} /home/${username}/docker
+  - docker compose --file /home/${username}/docker/docker-compose.yml pull
 
   ## TODO: this is a good idea but maybe paranoid, but definitely a PITA during development
   # - printf '\n\n=======\n'
@@ -167,27 +169,31 @@ runcmd:
 write_files:
   - content: ${nginx_conf_base64}
     encoding: b64
-    path: ${tmp_docker_volume_path}/nginx-conf/default.conf
+    path: ${tmp_folder}/docker/nginx/conf.d/default.conf
+
+  - content: ${nginx_dockerfile}
+    encoding: b64
+    path: ${tmp_folder}/docker/nginx/Dockerfile
 
   - content: ${nginx_config_wordpress_conf_base64}
     encoding: b64
-    path: ${tmp_docker_volume_path}/nginx-conf/modules/wordpress.conf
+    path: ${tmp_folder}/docker/nginx/conf.d/modules/wordpress.conf
 
   - content: ${nginx_config_general_conf_base64}
     encoding: b64
-    path: ${tmp_docker_volume_path}/nginx-conf/modules/general.conf
+    path: ${tmp_folder}/docker/nginx/conf.d/modules/general.conf
 
   - content: ${nginx_config_security_conf_base64}
     encoding: b64
-    path: ${tmp_docker_volume_path}/nginx-conf/modules/security.conf
+    path: ${tmp_folder}/docker/nginx/conf.d/modules/security.conf
 
   - content: ${wordpress_dotenv_base64}
     encoding: b64
-    path: ${tmp_docker_volume_path}/.env
+    path: ${tmp_folder}/docker/.env
 
   - content: ${docker_compose_base64}
     encoding: b64
-    path: ${tmp_docker_volume_path}/docker-compose.yml
+    path: ${tmp_folder}/docker/docker-compose.yml
 
 ## Restart the server:
 power_state:

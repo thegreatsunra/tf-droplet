@@ -4,49 +4,49 @@ version: "3"
 ## https://www.digitalocean.com/community/tutorials/how-to-install-wordpress-with-docker-compose
 
 services:
-  db:
+  mariadb:
     image: mariadb:10.9.3
-    container_name: db
+    container_name: mariadb
     restart: unless-stopped
     env_file: .env
     environment:
       - MYSQL_DATABASE=wordpress
     volumes:
-      - ${docker_volume_path}/db:/var/lib/mysql
+      - mariadb:/var/lib/mysql
     command: "--default-authentication-plugin=mysql_native_password"
     networks:
       - app-network
 
   wordpress:
     depends_on:
-      - db
+      - mariadb
     image: wordpress:6.0.2-php8.1-fpm-alpine
     container_name: wordpress
     restart: unless-stopped
     env_file: .env
     environment:
-      - WORDPRESS_DB_HOST=db:3306
+      - WORDPRESS_DB_HOST=mariadb:3306
       - WORDPRESS_DB_USER=$MYSQL_USER
       - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
       - WORDPRESS_DB_NAME=wordpress
     volumes:
-      - ${docker_volume_path}/wordpress:/var/www/html
+      - wordpress:/var/www/html
     networks:
       - app-network
 
   nginx:
     depends_on:
       - wordpress
-    image: nginx:1.23.1-alpine
+    build: ./nginx
     container_name: nginx
     restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ${docker_volume_path}/certbot-etc:/etc/letsencrypt
-      - ${docker_volume_path}/nginx-conf:/etc/nginx/conf.d
-      - ${docker_volume_path}/wordpress:/var/www/html
+      - certbot-etc:/etc/letsencrypt
+      # - nginx-conf:/etc/nginx/conf.d
+      - wordpress:/var/www/html
     networks:
       - app-network
 
@@ -56,8 +56,8 @@ services:
     image: certbot/certbot:v1.31.0
     container_name: certbot
     volumes:
-      - ${docker_volume_path}/certbot-etc:/etc/letsencrypt
-      - ${docker_volume_path}/wordpress:/var/www/html
+      - certbot-etc:/etc/letsencrypt
+      - wordpress:/var/www/html
     ## replace `--staging` with `--force-renewal` once you know it works
     command: |
       certonly
@@ -71,7 +71,7 @@ services:
 
 volumes:
   certbot-etc:
-  db:
+  mariadb:
   wordpress:
 
 networks:

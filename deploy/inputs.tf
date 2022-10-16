@@ -51,18 +51,9 @@ variable "root_temporary_password" {
   default = "temporary_password_change_me_immediately"
 }
 
-variable "tmp_folder_name" {
-  type    = string
-  default = "tmp_cloudinit"
-  validation {
-    condition     = length(regexall("[^-_a-z0-9]+", var.tmp_folder_name)) == 0 && var.tmp_folder_name != "tmp"
-    error_message = "Folder name cannot be 'tmp' and can only contain the following characters: a-z, 0-9, -, _"
-  }
-}
-
 variable "docker_volume_folder_name" {
   type    = string
-  default = "docker_volume"
+  default = "docker"
   validation {
     condition     = length(regexall("[^-_a-z0-9]+", var.docker_volume_folder_name)) == 0
     error_message = "Folder name can only contain the following characters: a-z, 0-9, -, _"

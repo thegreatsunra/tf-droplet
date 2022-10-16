@@ -2,19 +2,17 @@ server {
 	listen      80;
 	listen      [::]:80;
 	server_name ${domain_name};
+	## TODO: improve file paths when we know what we want
 	set         $base /var/www/html;
 	root        $base;
-	## TODO: improve file paths when we know what we want
-	# set         $base /var/www/${domain_name};
-	# root        $base/public;
 
 	# security
 	include     /etc/nginx/conf.d/modules/security.conf;
  
 	# logging
 	## TODO: improve file paths when we know what we want
-	# access_log  /var/log/nginx/${domain_name}.access.log;
-	# error_log   /var/log/nginx/${domain_name}.error.log warn;
+	# access_log  /var/www/html/${domain_name}/log/access.log;
+	# error_log   /var/www/html/${domain_name}/log/error.log warn;
 
 	# index.php
 	index       index.php;
