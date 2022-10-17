@@ -37,3 +37,4 @@ terraform.rc
 .env
 .DS_Store
 sites-available.json
+dns.json
