@@ -4,44 +4,43 @@ version: "3"
 ## https://www.digitalocean.com/community/tutorials/how-to-install-wordpress-with-docker-compose
 
 services:
-  mariadb:
+
+%{ for site_key, site_domain_name in sites_available ~}
+  ${database_prefix}${site_key}:
     image: mariadb:10.9.3
-    container_name: mariadb
+    container_name: ${database_prefix}${site_key}
     restart: unless-stopped
     env_file: .env
     environment:
-%{ for wp_container_key, wp_container_value in wp_containers ~}
-      - MYSQL_DATABASE=${wp_container_key}
-%{ endfor ~}
+      - MYSQL_DATABASE=${wordpress_prefix}${database_prefix}${site_key}
     volumes:
-      - mariadb:/var/lib/mysql
+      - ${database_prefix}${site_key}:/var/lib/mysql
     command: "--default-authentication-plugin=mysql_native_password"
     networks:
       - app-network
 
-%{ for wp_container_key, wp_container_value in wp_containers ~}
-  ${wp_container_key}:
+  ${wordpress_prefix}${site_key}:
     depends_on:
-      - mariadb
+      - ${database_prefix}${site_key}
     image: wordpress:6.0.2-php8.1-fpm-alpine
-    container_name: ${wp_container_key}
+    container_name: ${wordpress_prefix}${site_key}
     restart: unless-stopped
     env_file: .env
     environment:
-      - WORDPRESS_DB_HOST=mariadb:3306
+      - WORDPRESS_DB_HOST=${database_prefix}${site_key}:3306
       - WORDPRESS_DB_USER=$MYSQL_USER
       - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
-      - WORDPRESS_DB_NAME=${wp_container_key}
+      - WORDPRESS_DB_NAME=${wordpress_prefix}${database_prefix}${site_key}
     volumes:
-      - ${wp_container_key}:/var/www/html
+      - ${wordpress_prefix}${site_key}:/var/www/html
     networks:
       - app-network
 %{ endfor ~}
 
   nginx:
     depends_on:
-%{ for wp_container_key, wp_container_value in wp_containers ~}
-      - ${wp_container_key}
+%{ for site_key, site_domain_name in sites_available ~}
+      - ${wordpress_prefix}${site_key}
 %{ endfor ~}
     build: ./nginx
     container_name: nginx
@@ -51,8 +50,8 @@ services:
       - "443:443"
     volumes:
       - certbot-etc:/etc/letsencrypt
-%{ for wp_container_key, wp_container_value in wp_containers ~}
-      - ${wp_container_key}:/var/www/html/${wp_container_value}
+%{ for site_key, site_domain_name in sites_available ~}
+      - ${wordpress_prefix}${site_key}:/var/www/html/${site_domain_name}
 %{ endfor ~}
     networks:
       - app-network
@@ -64,27 +63,27 @@ services:
     container_name: certbot
     volumes:
       - certbot-etc:/etc/letsencrypt
-%{ for wp_container_key, wp_container_value in wp_containers ~}
-      - ${wp_container_key}:/var/www/html/${wp_container_value}
+%{ for site_key, site_domain_name in sites_available ~}
+      - ${wordpress_prefix}${site_key}:/var/www/html/${site_domain_name}
 %{ endfor ~}
     ## replace `--staging` with `--force-renewal` once you know it works
     command: |
-%{ for wp_container_key, wp_container_value in wp_containers ~}
+%{ for site_key, site_domain_name in sites_available ~}
       certonly
       --webroot
-      --webroot-path=/var/www/html/${wp_container_value}
+      --webroot-path=/var/www/html/${site_domain_name}
       --email ${email_address}
       --agree-tos
       --no-eff-email
       --staging
-      -d ${wp_container_value}
+      -d ${site_domain_name}
 %{ endfor ~}
 
 volumes:
   certbot-etc:
-  mariadb:
-%{ for wp_container_key, wp_container_value in wp_containers ~}
-  ${wp_container_key}:
+%{ for site_key, site_domain_name in sites_available ~}
+  ${database_prefix}${site_key}:
+  ${wordpress_prefix}${site_key}:
 %{ endfor ~}
 
 networks:

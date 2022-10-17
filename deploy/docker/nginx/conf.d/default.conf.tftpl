@@ -1,10 +1,10 @@
-%{ for wp_container_key, wp_container_value in wp_containers ~}
+%{ for site_key, site_domain_name in sites_available ~}
 server {
 	listen      80;
 	listen      [::]:80;
-	server_name ${wp_container_value};
+	server_name ${site_domain_name};
 	set         $base /var/www/html;
-	root        $base/${wp_container_value};
+	root        $base/${site_domain_name};
 
 	# security
 	include     /etc/nginx/conf.d/modules/security.conf;
@@ -18,7 +18,7 @@ server {
 	location ~ \.php$ {
 		try_files $uri =404;
 		fastcgi_split_path_info ^(.+\.php)(/.+)$;
-		fastcgi_pass ${wp_container_key}:9000;
+		fastcgi_pass ${wordpress_prefix}${site_key}:9000;
 		fastcgi_index index.php;
 		include fastcgi_params;
 		## it took me days to finally figure out what value fastcgi_param needed to be
