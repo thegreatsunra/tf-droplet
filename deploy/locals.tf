@@ -1,5 +1,4 @@
 locals {
-  tmp_folder = "/tmp_cloudinit"
 
   wp_loop_vars = {
     wp_containers = {

@@ -51,6 +51,11 @@ variable "root_temporary_password" {
   default = "temporary_password_change_me_immediately"
 }
 
+variable "tmp_folder_path" {
+  type    = string
+  default = "/tmp_cloudinit"
+}
+
 variable "docker_volume_folder_name" {
   type    = string
   default = "docker"
