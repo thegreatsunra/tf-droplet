@@ -13,6 +13,8 @@ services:
     env_file: .env
     environment:
       - MYSQL_DATABASE=${wordpress_prefix}${database_prefix}${site_key}
+      - MYSQL_PASSWORD=$MYSQL_PASSWORD_${site_key}
+      - MYSQL_USER=$MYSQL_USER_${site_key}
     volumes:
       - ${database_prefix}${site_key}:/var/lib/mysql
     command: "--default-authentication-plugin=mysql_native_password"
@@ -28,13 +30,14 @@ services:
     env_file: .env
     environment:
       - WORDPRESS_DB_HOST=${database_prefix}${site_key}:3306
-      - WORDPRESS_DB_USER=$MYSQL_USER
-      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
       - WORDPRESS_DB_NAME=${wordpress_prefix}${database_prefix}${site_key}
+      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD_${site_key}
+      - WORDPRESS_DB_USER=$MYSQL_USER_${site_key}
     volumes:
       - ${wordpress_prefix}${site_key}:/var/www/html
     networks:
       - app-network
+
 %{ endfor ~}
 
   nginx:
