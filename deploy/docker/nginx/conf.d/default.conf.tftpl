@@ -6,13 +6,13 @@ server {
 	set         $base /var/www/html;
 	root        $base/${site_domain_name};
 
-	# security
+	## security
 	include     /etc/nginx/conf.d/modules/security.conf;
  
-	# logging
-	# NOTE: Don't define logging here. It intercepts Docker's built-in logging
+	## logging
+	## NOTE: Don't define logging here. It intercepts Docker's built-in logging
 
-	# php and fastcgi
+	## php and fastcgi
 	include /etc/nginx/conf.d/modules/php.conf;
 
 	location ~ \.php$ {
@@ -27,10 +27,15 @@ server {
 		fastcgi_param PATH_INFO $fastcgi_path_info;
 	}
 
-	# additional config
+	## additional config
 	include /etc/nginx/conf.d/modules/general.conf;
 
-	# wordpress
+	## wordpress
 	include     /etc/nginx/conf.d/modules/wordpress.conf;
+
+	## BEGIN wordpress multisite
+	## Un-comment the following lines to enable WordPress multisite
+	## END wordpress multisite
+
 }
 %{ endfor ~}
