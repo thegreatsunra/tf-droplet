@@ -35,6 +35,15 @@ server {
 
 	## BEGIN wordpress multisite
 	## Un-comment the following lines to enable WordPress multisite
+	# include     /etc/nginx/conf.d/modules/wordpress-multisite.conf;
+	## avoid php readfile()
+	# location ^~ /blogs.dir {
+		# internal;
+		# alias /var/www/html/wp-content/blogs.dir;
+		# access_log off;
+		# log_not_found off;
+		# expires max;
+	# }
 	## END wordpress multisite
 
 }
