@@ -30,7 +30,6 @@ services:
     restart: unless-stopped
     env_file: .env
     environment:
-      - WORDPRESS_CONFIG_EXTRA=$WORDPRESS_CONFIG_EXTRA_${site_key}
       - WORDPRESS_DB_HOST=${database_prefix}${site_key}:3306
       - WORDPRESS_DB_NAME=${wordpress_prefix}${database_prefix}${site_key}
       - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD_${site_key}
