@@ -14,6 +14,7 @@ services:
     environment:
       - MYSQL_DATABASE=${wordpress_prefix}${database_prefix}${site_key}
       - MYSQL_PASSWORD=$MYSQL_PASSWORD_${site_key}
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD_${site_key}
       - MYSQL_USER=$MYSQL_USER_${site_key}
     volumes:
       - ${database_prefix}${site_key}:/var/lib/mysql
