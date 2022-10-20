@@ -25,7 +25,7 @@ services:
   ${wordpress_prefix}${site_key}:
     depends_on:
       - ${database_prefix}${site_key}
-    image: wordpress:6.0.2-php8.1-fpm-alpine
+    image: wordpress:6.0.3-php8.1-fpm
     container_name: ${wordpress_prefix}${site_key}
     restart: unless-stopped
     env_file: .env
