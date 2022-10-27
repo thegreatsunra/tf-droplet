@@ -4,33 +4,29 @@ version: "3"
 ## https://www.digitalocean.com/community/tutorials/how-to-install-wordpress-with-docker-compose
 
 services:
-
-%{ for site_key, site_domain_name in sites_available ~}
-  ${database_prefix}${site_key}:
+  mariadb:
     image: mariadb:10.9.3
-    container_name: ${database_prefix}${site_key}
+    container_name: mariadb
     restart: unless-stopped
     env_file: .env
     environment:
-      - MYSQL_DATABASE=${wordpress_prefix}${database_prefix}${site_key}
-      - MYSQL_PASSWORD=$MYSQL_PASSWORD_${site_key}
-      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD_${site_key}
-      - MYSQL_USER=$MYSQL_USER_${site_key}
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
     volumes:
-      - ${database_prefix}${site_key}:/var/lib/mysql
+      - mariadb:/var/lib/mysql
     command: "--default-authentication-plugin=mysql_native_password"
     networks:
       - app-network
 
+%{ for site_key, site_domain_name in sites_available ~}
   ${wordpress_prefix}${site_key}:
     depends_on:
-      - ${database_prefix}${site_key}
+      - mariadb
     image: wordpress:6.0.3-php8.1-fpm
     container_name: ${wordpress_prefix}${site_key}
     restart: unless-stopped
     env_file: .env
     environment:
-      - WORDPRESS_DB_HOST=${database_prefix}${site_key}:3306
+      - WORDPRESS_DB_HOST=mariadb:3306
       - WORDPRESS_DB_NAME=${wordpress_prefix}${database_prefix}${site_key}
       - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD_${site_key}
       - WORDPRESS_DB_USER=$MYSQL_USER_${site_key}
@@ -40,7 +36,6 @@ services:
       - app-network
 
 %{ endfor ~}
-
   nginx:
     depends_on:
 %{ for site_key, site_domain_name in sites_available ~}
@@ -85,8 +80,8 @@ services:
 
 volumes:
   certbot-etc:
+  mariadb:
 %{ for site_key, site_domain_name in sites_available ~}
-  ${database_prefix}${site_key}:
   ${wordpress_prefix}${site_key}:
 %{ endfor ~}
 
