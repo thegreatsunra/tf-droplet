@@ -39,7 +39,7 @@ server {
 	## avoid php readfile()
 	# location ^~ /blogs.dir {
 		# internal;
-		# alias /var/www/html/wp-content/blogs.dir;
+		# alias $base/${site_domain_name}/wp-content/blogs.dir;
 		# access_log off;
 		# log_not_found off;
 		# expires max;
