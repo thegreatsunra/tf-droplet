@@ -111,14 +111,18 @@ runcmd:
   - printf '\n\n=======\n'
   - echo 'INSTALL DOCKER'
   - printf '=======\n\n'
-  - mkdir -p /etc/apt/keyrings
+
+  ## Addresses: "Installing gpg key...Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8))."
   - |
-    curl -fsSL https://download.docker.com/linux/debian/gpg \
-    | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    wget -O- https://download.docker.com/linux/debian/gpg | \
+    gpg --dearmor | \
+    tee /usr/share/keyrings/docker.gpg > /dev/null
   - |
-    echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
-    $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+    echo "deb [arch=$(dpkg --print-architecture) \
+    signed-by=/usr/share/keyrings/docker.gpg] \
+    https://download.docker.com/linux/debian \
+    $(lsb_release -cs) stable" |\
+    tee /etc/apt/sources.list.d/docker.list
   - apt update -yq
   - |
     apt install -yq \
