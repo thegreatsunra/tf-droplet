@@ -8,6 +8,8 @@
 package_upgrade: true
 ## install apt packages
 packages:
+  ## apt-transport-https required for installing lynis
+  - apt-transport-https
   ## ca-certificates required for installing docker
   - ca-certificates
   ## curl required for installing docker
@@ -85,7 +87,7 @@ runcmd:
   - service fail2ban start
 
   - printf '\n\n=======\n'
-  - echo 'CONFIGURING UFW'
+  - echo 'CONFIGURE UFW'
   - printf '=======\n\n'
   ## Temporarily disable uncomplicated firewall as we're going to start configuring it:
   - ufw disable
