@@ -119,7 +119,27 @@ runcmd:
   ## Update rookit hunter properties definition list:
   - rkhunter --propupd
 
+  ###########
+  ## LYNIS ##
+  ###########
+  - printf '\n\n=======\n'
+  - echo 'INSTALL LYNIS'
   - printf '=======\n\n'
+  - |
+    wget -O - https://packages.cisofy.com/keys/cisofy-software-public.key | \
+    gpg --dearmor | \
+    tee /usr/share/keyrings/lynis.gpg > /dev/null
+  ## Skip translations
+  - echo 'Acquire::Languages "none";' | tee /etc/apt/apt.conf.d/99disable-translations
+  - |
+    echo "deb [arch=$(dpkg --print-architecture) \
+    signed-by=/usr/share/keyrings/lynis.gpg] \
+    https://packages.cisofy.com/community/lynis/deb/ \
+    stable main" | \
+    tee /etc/apt/sources.list.d/lynis.list
+  ## Grab latest apt updates now that we can query lynis' package server, and install the latest available version of lynis:
+  - apt update -yq
+  - apt install -yq lynis
 
   - printf '\n\n=======\n'
   - echo 'INSTALL DOCKER'
