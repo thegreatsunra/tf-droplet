@@ -56,9 +56,11 @@ runcmd:
   ## Back up our SSH configuration file:
   - cp /etc/ssh/sshd_config /etc/ssh/_sshd_config.original
   ## Change the default SSH port:
-  # - sed -i -e '/^#?Port/s/^.*$/Port 4444/' /etc/ssh/sshd_config
+  - sed -i -E '/^#?Port/s/^.*$/Port 4444/' /etc/ssh/sshd_config
   ## Disable password authentication:
   - sed -i -E '/^#?PasswordAuthentication/s/^.*$/PasswordAuthentication no/' /etc/ssh/sshd_config
+  ## Disable empty passwords:
+  - sed -i -E '/^#?PermitEmptyPasswords/s/^.*$/PermitEmptyPasswords no/' /etc/ssh/sshd_config
   ## Prevent root login via SSH:
   - sed -i -E '/^#?PermitRootLogin/s/^.*$/PermitRootLogin no/' /etc/ssh/sshd_config
   ## Set logging level to verbose: (I think some log analysis tools count on this)
