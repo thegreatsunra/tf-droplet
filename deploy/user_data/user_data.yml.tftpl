@@ -175,10 +175,6 @@ write_files:
     encoding: b64
     path: ${tmp_folder_path}/docker/nginx/conf.d/default.conf
 
-  - content: ${nginx_dockerfile}
-    encoding: b64
-    path: ${tmp_folder_path}/docker/nginx/Dockerfile
-
   - content: ${nginx_config_wordpress_conf_base64}
     encoding: b64
     path: ${tmp_folder_path}/docker/nginx/conf.d/modules/wordpress.conf
