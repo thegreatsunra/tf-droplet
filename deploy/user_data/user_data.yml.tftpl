@@ -19,6 +19,7 @@ packages:
   ## lsb-release required for installing docker
   - lsb-release
   - ufw
+  - rkhunter
   - zsh
 
 users:
@@ -108,10 +109,21 @@ runcmd:
   ## Show the rules that are active:
   - ufw status verbose
 
+  ##############
+  ## RKHUNTER ##
+  ##############
+  - printf '\n\n=======\n'
+  - echo 'CONFIGURE RKHUNTER'
+  - printf '=======\n\n'
+  - rkhunter --update
+  ## Update rookit hunter properties definition list:
+  - rkhunter --propupd
+
+  - printf '=======\n\n'
+
   - printf '\n\n=======\n'
   - echo 'INSTALL DOCKER'
   - printf '=======\n\n'
-
   ## Addresses: "Installing gpg key...Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8))."
   - |
     wget -O- https://download.docker.com/linux/debian/gpg | \
