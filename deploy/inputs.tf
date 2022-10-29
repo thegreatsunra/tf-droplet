@@ -6,6 +6,11 @@ variable "digital_ocean_token" {
   type = string
 }
 
+variable "droplet_backups" {
+  type    = bool
+  default = false
+}
+
 variable "droplet_image" {
   type    = string
   default = "debian-11-x64"

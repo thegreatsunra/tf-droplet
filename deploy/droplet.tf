@@ -1,4 +1,5 @@
 resource "digitalocean_droplet" "droplet" {
+  backups    = var.droplet_backups
   image      = var.droplet_image
   monitoring = true
   name       = var.droplet_name
