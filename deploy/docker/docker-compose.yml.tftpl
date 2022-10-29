@@ -45,7 +45,7 @@ services:
 %{ for site_key, site_domain_name in sites_available ~}
       - ${wordpress_prefix}${site_key}
 %{ endfor ~}
-    build: ./nginx
+    image: nginx:1.22.1
     container_name: nginx
     restart: unless-stopped
     ports:
