@@ -99,11 +99,11 @@ runcmd:
   # - cp /etc/ufw/before.rules /etc/ufw/before.original
   # - cp /etc/ufw/before6.rules /etc/ufw/before6.original
   # Allow SSH on the default ports:
-  - ufw allow ssh
+  # - ufw allow ssh
   ## Deny requests on the default SSH ports:
-  # - ufw deny ssh
+  - ufw deny ssh
   ## Allow requests on updated SSH port:
-  # - ufw allow 4444/tcp
+  - ufw allow 4444/tcp
   ## Allow requests on the http port:
   - ufw allow http
   ## Allow requests on the https port:
