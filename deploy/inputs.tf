@@ -1,3 +1,8 @@
+variable "cloudflare_record_proxied" {
+  type = bool
+  default = false
+}
+
 variable "cloudflare_token" {
   type = string
 }
