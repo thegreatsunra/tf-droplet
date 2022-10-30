@@ -1,5 +1,21 @@
 %{ for site_key, site_domain_name in sites_available ~}
+
+## un-comment the following lines for WordPress multisite
+## reference: http://wordpress.org/extend/plugins/nginx-helper/
+## these map blocks must remain outside a server{} block
+## BEGIN wordpress multisite
+#map $uri $blogname {
+#	~^(?P<blogpath>/[^/]+/)files/(.*)		$blogpath ;
 #}
+
+#map $blogname $blogid {
+#	default			-999 ;
+#	/				1 ;
+#	/second-blog/	2 ;
+#	/third-blog/	3 ;
+##	etc...
+#}
+## END wordpress multisite
 
 server {
 	## comment out once SSL is configured
