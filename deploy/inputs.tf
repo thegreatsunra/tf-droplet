@@ -23,8 +23,8 @@ variable "droplet_backups" {
 variable "droplet_hostname" {
   type = string
   validation {
-    condition     = length(regexall("[^.-a-z0-9]+", var.droplet_hostname)) == 0
-    error_message = "Droplet hostname can only contain the following characters: a-z, 0-9, -, ."
+    condition     = length(regexall("[^-.a-z]+", var.droplet_hostname)) == 0
+    error_message = "Droplet hostname can only contain the following characters: a-z, -, ."
   }
 }
 
