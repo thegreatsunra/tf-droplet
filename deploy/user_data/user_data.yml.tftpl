@@ -61,6 +61,8 @@ runcmd:
   - sed -i -E '/^#?PasswordAuthentication/s/^.*$/PasswordAuthentication no/' /etc/ssh/sshd_config
   ## Disable empty passwords:
   - sed -i -E '/^#?PermitEmptyPasswords/s/^.*$/PermitEmptyPasswords no/' /etc/ssh/sshd_config
+  ## Disable TCPKeepAlive:
+  - sed -i -E '/^#?TCPKeepAlive/s/^.*$/TCPKeepAlive no/' /etc/ssh/sshd_config
   ## Prevent root login via SSH:
   - sed -i -E '/^#?PermitRootLogin/s/^.*$/PermitRootLogin no/' /etc/ssh/sshd_config
   ## Set logging level to verbose: (I think some log analysis tools count on this)
