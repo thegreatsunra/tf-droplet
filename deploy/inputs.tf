@@ -6,14 +6,18 @@ variable "digital_ocean_token" {
   type = string
 }
 
+variable "docker_volume_folder_name" {
+  type    = string
+  default = "docker"
+  validation {
+    condition     = length(regexall("[^-_a-z0-9]+", var.docker_volume_folder_name)) == 0
+    error_message = "Folder name can only contain the following characters: a-z, 0-9, -, _"
+  }
+}
+
 variable "droplet_backups" {
   type    = bool
   default = false
-}
-
-variable "droplet_image" {
-  type    = string
-  default = "debian-11-x64"
 }
 
 variable "droplet_hostname" {
@@ -22,6 +26,11 @@ variable "droplet_hostname" {
     condition     = length(regexall("[^.-a-z0-9]+", var.droplet_hostname)) == 0
     error_message = "Droplet hostname can only contain the following characters: a-z, 0-9, -, ."
   }
+}
+
+variable "droplet_image" {
+  type    = string
+  default = "debian-11-x64"
 }
 
 variable "droplet_region" {
@@ -59,15 +68,6 @@ variable "root_temporary_password" {
 variable "tmp_folder_path" {
   type    = string
   default = "/tmp_cloudinit"
-}
-
-variable "docker_volume_folder_name" {
-  type    = string
-  default = "docker"
-  validation {
-    condition     = length(regexall("[^-_a-z0-9]+", var.docker_volume_folder_name)) == 0
-    error_message = "Folder name can only contain the following characters: a-z, 0-9, -, _"
-  }
 }
 
 variable "user_full_name" {

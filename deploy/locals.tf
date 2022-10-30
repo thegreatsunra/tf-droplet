@@ -1,13 +1,14 @@
 locals {
 
-  sites_available = jsondecode(file("./sites-available.json"))
   dns             = jsondecode(file("./dns.json"))
+  
+  sites_available = jsondecode(file("./sites-available.json"))
 
   container_loop = {
-    sites_available  = local.sites_available
+    database_prefix  = "db_"
     dns              = local.dns
     email_address    = var.email_address
-    database_prefix  = "db_"
+    sites_available  = local.sites_available
     wordpress_prefix = "wp_"
   }
 
@@ -15,8 +16,8 @@ locals {
     docker_compose_base64              = base64encode(templatefile("./docker/docker-compose.yml.tftpl", local.container_loop))
     droplet_hostname                   = var.droplet_hostname
     nginx_conf_base64                  = base64encode(templatefile("./docker/nginx/conf.d/default.conf.tftpl", local.container_loop))
-    nginx_config_php_conf_base64       = base64encode(templatefile("./docker/nginx/conf.d/modules/php.conf.tftpl", local.container_loop))
     nginx_config_general_conf_base64   = base64encode(file("./docker/nginx/conf.d/modules/general.conf"))
+    nginx_config_php_conf_base64       = base64encode(templatefile("./docker/nginx/conf.d/modules/php.conf.tftpl", local.container_loop))
     nginx_config_security_conf_base64  = base64encode(file("./docker/nginx/conf.d/modules/security.conf"))
     nginx_config_wordpress_conf_base64 = base64encode(file("./docker/nginx/conf.d/modules/wordpress.conf"))
     nginx_config_wordpress_multisite_conf_base64  = base64encode(file("./docker/nginx/conf.d/modules/wordpress-multisite.conf"))
