@@ -29,8 +29,7 @@ sudo cat /var/log/cloud-init-output.log
 ## WAIT UNTIL THE DROPLET REBOOTS BEFORE CONTINUING
 
 ## start the containers for the first time
-cd wp_data
-sudo docker compose up -d
+cd ~/docker && sudo docker compose up -d
 
 ## check status of containers
 ## nginx, wordpress, and mariadb should be running
@@ -41,16 +40,15 @@ sudo docker ps
 ## there should be a folder named after your domain in this folder
 sudo docker compose exec nginx ls -la /etc/letsencrypt/live
 
-## edit wp_data/docker-compose.yml and:
+## edit ~/docker/docker-compose.yml and:
 ## remove --staging and replace with --force-renewal
 ## then, re-run certbot to really generate certs for your domain
-sudo docker compose up --force-recreate --no-deps certbot
+sudo docker compose up --force-recreate -d --no-deps certbot
 
-## replace nginx.conf with nginx.conf.https
-mv nginx-conf/nginx.conf nginx-conf/nginx.conf.http && mv nginx-conf/nginx.conf.https nginx-conf/nginx.conf
+## then, comment out the HTTP stuff and un-comment the HTTPS stuff in nginx default.conf
 
-## then force-recreate the containers
-sudo docker compose up -d --force-recreate
+## then restart the containers
+sudo docker compose restart -d
 ```
 
 ## Tear it all down
