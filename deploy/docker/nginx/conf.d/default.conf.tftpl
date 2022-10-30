@@ -1,19 +1,4 @@
 %{ for site_key, site_domain_name in sites_available ~}
-## un-comment once SSL is configured
-#server {
-#	listen 80 ;
-#	listen [::]:80 ;
-#	server_name ${site_domain_name} ;
-#	set         $base /var/www/html ;
-#
-#	location ~ /.well-known/acme-challenge {
-#		allow all ;
-#		root        $base/${site_domain_name} ;
-#	}
-#
-#	location / {
-#		rewrite ^ https://$host$request_uri? permanent ;
-#	}
 #}
 
 server {
