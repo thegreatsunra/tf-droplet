@@ -204,6 +204,15 @@ runcmd:
   # - passwd --expire ${username}
 
   - printf '\n\n=======\n'
+  - echo 'CONFIGURE HOSTNAME'
+  - printf '=======\n\n'
+
+  - lsattr /etc/hostname && sudo chattr -i /etc/hostname
+  - echo ${droplet_hostname} > /etc/hostname
+  - hostname -F /etc/hostname
+  - chattr +i /etc/hostname
+
+  - printf '\n\n=======\n'
   - echo 'END RUNCMD'
   - printf '=======\n\n'
 

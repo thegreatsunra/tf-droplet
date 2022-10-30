@@ -13,6 +13,7 @@ locals {
 
   user_data_vars = {
     docker_compose_base64              = base64encode(templatefile("./docker/docker-compose.yml.tftpl", local.container_loop))
+    droplet_hostname                   = var.droplet_hostname
     nginx_conf_base64                  = base64encode(templatefile("./docker/nginx/conf.d/default.conf.tftpl", local.container_loop))
     nginx_config_php_conf_base64       = base64encode(templatefile("./docker/nginx/conf.d/modules/php.conf.tftpl", local.container_loop))
     nginx_config_general_conf_base64   = base64encode(file("./docker/nginx/conf.d/modules/general.conf"))

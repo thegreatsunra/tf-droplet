@@ -16,11 +16,11 @@ variable "droplet_image" {
   default = "debian-11-x64"
 }
 
-variable "droplet_name" {
+variable "droplet_hostname" {
   type = string
   validation {
-    condition     = length(regexall("[^-a-z0-9]+", var.droplet_name)) == 0
-    error_message = "Droplet name can only contain the following characters: a-z, 0-9, -"
+    condition     = length(regexall("[^.-a-z0-9]+", var.droplet_hostname)) == 0
+    error_message = "Droplet hostname can only contain the following characters: a-z, 0-9, -, ."
   }
 }
 
