@@ -36,6 +36,10 @@ services:
       - WORDPRESS_DB_USER=$MYSQL_USER_${site_key}
     volumes:
       - ${wordpress_prefix}${site_key}:/var/www/html
+    deploy:
+      resources:
+        limits:
+          memory: 96MB
     networks:
       - app-network
 
@@ -57,6 +61,10 @@ services:
 %{ for site_key, site_domain_name in sites_available ~}
       - ${wordpress_prefix}${site_key}:/var/www/html/${site_domain_name}
 %{ endfor ~}
+    deploy:
+      resources:
+        limits:
+          memory: 64MB
     networks:
       - app-network
 
