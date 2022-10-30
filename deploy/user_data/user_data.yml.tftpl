@@ -204,8 +204,11 @@ runcmd:
   # - passwd --expire ${username}
 
   - printf '\n\n=======\n'
-  - echo 'CONFIGURE HOSTNAME'
+  - echo 'PERFORM SECURITY SCANS'
   - printf '=======\n\n'
+  - rkhunter --checkall --skip-keypress
+  - chkrootkit
+  - lynis audit system
 
   - printf '\n\n=======\n'
   - echo 'CONFIGURE HOSTNAME'
