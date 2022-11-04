@@ -17,6 +17,8 @@ services:
     deploy:
       resources:
         limits:
+          memory: 384M
+        reservations:
           memory: 256M
     networks:
       - app-network
@@ -39,7 +41,9 @@ services:
     deploy:
       resources:
         limits:
-          memory: 96MB
+          memory: 128M
+        reservations:
+          memory: 64M
     networks:
       - app-network
 
@@ -64,7 +68,9 @@ services:
     deploy:
       resources:
         limits:
-          memory: 64MB
+          memory: 96M
+        reservations:
+          memory: 48M
     networks:
       - app-network
 
