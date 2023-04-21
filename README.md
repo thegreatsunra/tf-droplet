@@ -2,7 +2,7 @@
 
 > Together at last
 
-## Usage
+## Getting started
 
 1. Generate and add your Digital Ocean and Cloudflare API tokens
 1. Create `.env` files based on the `.env.example` files and update values
@@ -51,7 +51,14 @@ sudo docker compose up --force-recreate -d --no-deps certbot
 sudo docker compose restart -d
 ```
 
-## Tear it all down
+## Maintenance
+
+```shell
+## Force-recreate your deployed Docker containers
+cd ~/docker && sudo docker compose up -d --force-recreate
+```
+
+## Destroying what you've made
 
 ```shell
 task tf-destroy
